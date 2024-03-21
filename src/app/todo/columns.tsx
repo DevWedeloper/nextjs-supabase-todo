@@ -5,6 +5,7 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Todo } from '@/lib/types';
 import { ColumnDef } from '@tanstack/react-table';
 import { ArrowUpDown } from 'lucide-react';
+import moment from 'moment';
 
 export const columns: ColumnDef<Todo>[] = [
   {
@@ -56,6 +57,10 @@ export const columns: ColumnDef<Todo>[] = [
         </Button>
       );
     },
+    cell: ({ row, column }) =>
+      moment(new Date(row.getValue(column.id))).format(
+        'MMMM Do YYYY, h:mm:ss a',
+      ),
   },
   {
     accessorKey: 'due_date',
@@ -70,6 +75,10 @@ export const columns: ColumnDef<Todo>[] = [
         </Button>
       );
     },
+    cell: ({ row, column }) =>
+      moment(new Date(row.getValue(column.id))).format(
+        'MMMM Do YYYY, h:mm:ss a',
+      ),
   },
   {
     accessorKey: 'completed',
