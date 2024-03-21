@@ -1,5 +1,5 @@
 import { Todo } from '@/lib/types';
-import { AddTodo } from './add-todo';
+import AddTodo from './add-todo';
 import { columns } from './todo/columns';
 import { DataTable } from './todo/data-table';
 

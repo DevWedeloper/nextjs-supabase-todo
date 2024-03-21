@@ -5,7 +5,7 @@ import { Input } from '@/components/ui/input';
 import { useRef } from 'react';
 import { addTodo } from './actions';
 
-export function AddTodo() {
+export default function AddTodo() {
   const ref = useRef<HTMLFormElement>(null);
   const handleSubmit = async (formData: FormData) => {
     await addTodo(formData);
