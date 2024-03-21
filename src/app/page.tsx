@@ -81,7 +81,7 @@ async function getData(): Promise<Todo[]> {
       task: 'Mock Task 11',
       due_date: new Date('2024-04-22'),
       completed: false,
-    }
+    },
   ];
 }
 
