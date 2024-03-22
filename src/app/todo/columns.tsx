@@ -83,5 +83,16 @@ export const columns: ColumnDef<Todo>[] = [
   {
     accessorKey: 'completed',
     header: 'Completed',
+    cell: ({ row, column }) => {
+      return (
+        <Checkbox
+          checked={row.getValue(column.id)}
+          onCheckedChange={(value) => {
+            console.log(!!value);
+          }}
+          aria-label='Select completed'
+        />
+      );
+    },
   },
 ];
