@@ -1,11 +1,13 @@
 'use client';
 
+import { toastError } from '@/components/toasts';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { ColumnDef } from '@tanstack/react-table';
 import { ArrowUpDown, Pencil, Trash2 } from 'lucide-react';
 import moment from 'moment';
 import { Todo } from '../../../types';
+import { deleteTodo } from './actions';
 
 export const columns: ColumnDef<Todo>[] = [
   {
@@ -98,13 +100,21 @@ export const columns: ColumnDef<Todo>[] = [
   },
   {
     id: 'actions',
-    cell: () => {
+    cell: ({ row }) => {
+      const handleDelete = async () => {
+        const { error } = await deleteTodo(row.original.id.toString());
+
+        if (error) {
+          toastError(error);
+        }
+      };
+
       return (
         <div className='flex gap-2'>
           <Button variant='outline' size='icon'>
             <Pencil className='h-4 w-4 text-green-500' />
           </Button>
-          <Button variant='outline' size='icon'>
+          <Button variant='outline' size='icon' onClick={handleDelete}>
             <Trash2 className='h-4 w-4 text-red-500' />
           </Button>
         </div>
