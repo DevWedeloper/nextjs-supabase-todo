@@ -89,8 +89,8 @@ export default async function Home() {
   const data = await getData();
 
   return (
-    <div className='flex h-screen items-center justify-center p-4'>
-      <div className='flex flex-col gap-4'>
+    <div className='p-4'>
+      <div className='flex w-full flex-col gap-4'>
         <AddTodo />
         <DataTable columns={columns} data={data} />
       </div>
