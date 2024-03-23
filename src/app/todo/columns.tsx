@@ -2,10 +2,10 @@
 
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
-import { Todo } from '@/lib/types';
 import { ColumnDef } from '@tanstack/react-table';
 import { ArrowUpDown } from 'lucide-react';
 import moment from 'moment';
+import { Todo } from '../../../types';
 
 export const columns: ColumnDef<Todo>[] = [
   {
