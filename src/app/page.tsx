@@ -8,7 +8,7 @@ export default async function Home() {
   const { data } = await supabase
     .from('todo')
     .select()
-    .order('task', { ascending: false });
+    .order('task');
 
   return (
     <div className='flex min-h-screen items-center justify-center p-4'>
