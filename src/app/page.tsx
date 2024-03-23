@@ -1,4 +1,3 @@
-import { Todo } from '@/lib/types';
 import { createClient } from '@/utils/supabase/server';
 import AddTodo from './add-todo';
 import { columns } from './todo/columns';
@@ -12,7 +11,7 @@ export default async function Home() {
     <div className='flex min-h-screen items-center justify-center p-4'>
       <div className='flex w-full flex-col gap-4'>
         <AddTodo />
-        <DataTable columns={columns} data={data as Todo[]} />
+        {data && <DataTable columns={columns} data={data} />}
       </div>
     </div>
   );
