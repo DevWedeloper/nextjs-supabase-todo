@@ -1,12 +1,12 @@
 'use server';
 
-import { TAddTodoSchema, addTodoSchema } from '@/lib/types';
+import { Stringify, TAddTodoSchema, addTodoSchema } from '@/lib/types';
 import { createClient } from '@/utils/supabase/server';
 import { revalidatePath } from 'next/cache';
 
 export async function addTodo(formData: TAddTodoSchema) {
   const result = addTodoSchema.safeParse(formData);
-  let zodErrors: Partial<TAddTodoSchema> = {};
+  let zodErrors: Partial<Stringify<TAddTodoSchema>> = {};
   if (!result.success) {
     result.error.issues.forEach((issue) => {
       zodErrors = { ...zodErrors, [issue.path[0]]: issue.message };

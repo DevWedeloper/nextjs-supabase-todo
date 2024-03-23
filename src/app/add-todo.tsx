@@ -1,5 +1,6 @@
 'use client';
 
+import { toastError } from '@/components/toasts';
 import { Button } from '@/components/ui/button';
 import { Calendar } from '@/components/ui/calendar';
 import {
@@ -36,7 +37,19 @@ export default function AddTodo() {
     const { error } = await addTodo(values);
 
     if (error) {
-      console.log(error);
+      if ('task' in error) {
+        form.setError('task', { type: 'server', message: error.task });
+      }
+      if ('deadline' in error) {
+        form.setError('deadline', {
+          type: 'server',
+          message: error.deadline,
+        });
+      }
+      if ('addTodoError' in error) {
+        toastError(`${error.addTodoError}`);
+        form.setError('root', { type: 'server', message: error.addTodoError });
+      }
     }
 
     if (!error) {
