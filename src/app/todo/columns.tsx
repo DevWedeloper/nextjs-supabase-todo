@@ -7,7 +7,7 @@ import { ColumnDef } from '@tanstack/react-table';
 import { ArrowUpDown, Pencil, Trash2 } from 'lucide-react';
 import moment from 'moment';
 import { Todo } from '../../../types';
-import { deleteTodo } from './actions';
+import { deleteTodo, updateCompletedStatus } from './actions';
 
 export const columns: ColumnDef<Todo>[] = [
   {
@@ -87,11 +87,22 @@ export const columns: ColumnDef<Todo>[] = [
     accessorKey: 'completed',
     header: 'Completed',
     cell: ({ row, column }) => {
+      const handleChange = async (completed: boolean) => {
+        const { error } = await updateCompletedStatus(
+          row.original.id.toString(),
+          completed,
+        );
+
+        if (error) {
+          toastError(error);
+        }
+      };
+
       return (
         <Checkbox
           checked={row.getValue(column.id)}
           onCheckedChange={(value) => {
-            console.log(!!value);
+            handleChange(!!value);
           }}
           aria-label='Select completed'
         />
