@@ -1,9 +1,11 @@
 'use server';
 
 import { TAddTodoSchema, addTodoSchema } from '@/lib/types';
+import { createClient } from '@/utils/supabase/server';
+import { revalidatePath } from 'next/cache';
 
-export async function addTodo(data: TAddTodoSchema) {
-  const result = addTodoSchema.safeParse(data);
+export async function addTodo(formData: TAddTodoSchema) {
+  const result = addTodoSchema.safeParse(formData);
   let zodErrors: Partial<TAddTodoSchema> = {};
   if (!result.success) {
     result.error.issues.forEach((issue) => {
@@ -12,5 +14,15 @@ export async function addTodo(data: TAddTodoSchema) {
     return { error: zodErrors };
   }
 
-  return { error: null };
+  const supabase = createClient();
+  const { error } = await supabase
+    .from('todo')
+    .insert({
+      due_date: formData.deadline?.toISOString(),
+      task: formData.task,
+    });
+
+  revalidatePath('/');
+
+  return { error: error ? { addTodoError: error.message } : null };
 }
