@@ -73,8 +73,13 @@ export const columns: ColumnDef<Todo>[] = [
         </Button>
       );
     },
-    cell: ({ row, column }) =>
-      moment(new Date(row.getValue(column.id))).format('MM-DD-YYYY, hh:mm A'),
+    cell: ({ row, column }) => {
+      const value = row.getValue(column.id);
+      if (value === null || value === undefined) {
+        return 'n/a';
+      }
+      return moment(new Date(value as Date)).format('MM-DD-YYYY, hh:mm A');
+    },
   },
   {
     accessorKey: 'completed',
