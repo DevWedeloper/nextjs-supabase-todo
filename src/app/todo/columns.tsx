@@ -3,7 +3,7 @@
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { ColumnDef } from '@tanstack/react-table';
-import { ArrowUpDown } from 'lucide-react';
+import { ArrowUpDown, Pencil, Trash2 } from 'lucide-react';
 import moment from 'moment';
 import { Todo } from '../../../types';
 
@@ -93,6 +93,21 @@ export const columns: ColumnDef<Todo>[] = [
           }}
           aria-label='Select completed'
         />
+      );
+    },
+  },
+  {
+    id: 'actions',
+    cell: () => {
+      return (
+        <div className='flex gap-2'>
+          <Button variant='outline' size='icon'>
+            <Pencil className='h-4 w-4 text-green-500' />
+          </Button>
+          <Button variant='outline' size='icon'>
+            <Trash2 className='h-4 w-4 text-red-500' />
+          </Button>
+        </div>
       );
     },
   },
