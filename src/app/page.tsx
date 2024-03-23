@@ -5,7 +5,10 @@ import { DataTable } from './todo/data-table';
 
 export default async function Home() {
   const supabase = createClient();
-  const { data } = await supabase.from('todo').select();
+  const { data } = await supabase
+    .from('todo')
+    .select()
+    .order('task', { ascending: false });
 
   return (
     <div className='flex min-h-screen items-center justify-center p-4'>
