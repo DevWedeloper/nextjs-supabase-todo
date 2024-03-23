@@ -9,7 +9,7 @@ export default async function Home() {
   const { data } = await supabase.from('todo').select();
 
   return (
-    <div className='p-4'>
+    <div className='flex min-h-screen items-center justify-center p-4'>
       <div className='flex w-full flex-col gap-4'>
         <AddTodo />
         <DataTable columns={columns} data={data as Todo[]} />
