@@ -2,53 +2,115 @@
 
 import { Button } from '@/components/ui/button';
 import { Calendar } from '@/components/ui/calendar';
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormMessage,
+} from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover';
+import { TAddTodoSchema, addTodoSchema } from '@/lib/types';
 import { cn } from '@/lib/utils';
-import { CalendarIcon } from '@radix-ui/react-icons';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { ReloadIcon } from '@radix-ui/react-icons';
 import { format } from 'date-fns';
-import { useRef, useState } from 'react';
+import { CalendarIcon } from 'lucide-react';
+import { useForm } from 'react-hook-form';
 import { addTodo } from './actions';
 
 export default function AddTodo() {
-  const [date, setDate] = useState<Date>();
-  const ref = useRef<HTMLFormElement>(null);
-  const handleSubmit = async (formData: FormData) => {
-    await addTodo(formData);
-    ref.current?.reset();
+  const form = useForm<TAddTodoSchema>({
+    resolver: zodResolver(addTodoSchema),
+    defaultValues: {
+      task: '',
+    },
+  });
+
+  const onSubmit = async (values: TAddTodoSchema) => {
+    const { error } = await addTodo(values);
+
+    if (error) {
+      console.log(error);
+    }
+
+    if (!error) {
+      form.reset();
+    }
   };
 
   return (
-    <form
-      action={handleSubmit}
-      ref={ref}
-      className='flex w-full items-center space-x-2'
-    >
-      <Input id='todo' name='todo' type='text' placeholder='Enter your todo' />
-      <Popover>
-        <PopoverTrigger asChild>
-          <Button
-            variant={'outline'}
-            className={cn('font-normal', !date && 'text-muted-foreground')}
-          >
-            <CalendarIcon className='mr-2 h-4 w-4' />
-            {date ? format(date, 'PPP') : <span>Pick a date</span>}
-          </Button>
-        </PopoverTrigger>
-        <PopoverContent className='w-auto p-0'>
-          <Calendar
-            mode='single'
-            selected={date}
-            onSelect={setDate}
-            initialFocus
-          />
-        </PopoverContent>
-      </Popover>
-      <Button type='submit'>Add Todo</Button>
-    </form>
+    <Form {...form}>
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className='flex w-full items-baseline space-x-2'
+      >
+        <FormField
+          control={form.control}
+          name='task'
+          render={({ field }) => (
+            <FormItem className='w-full'>
+              <FormControl>
+                <Input placeholder='Enter your task' {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name='deadline'
+          render={({ field }) => (
+            <FormItem className='flex flex-col'>
+              <Popover>
+                <PopoverTrigger asChild>
+                  <FormControl>
+                    <Button
+                      variant={'outline'}
+                      className={cn(
+                        'font-normal',
+                        !field.value && 'text-muted-foreground',
+                      )}
+                    >
+                      {field.value ? (
+                        format(field.value, 'PPP')
+                      ) : (
+                        <span>Pick a date</span>
+                      )}
+                      <CalendarIcon className='ml-auto h-4 w-4 opacity-50' />
+                    </Button>
+                  </FormControl>
+                </PopoverTrigger>
+                <PopoverContent className='w-auto p-0' align='start'>
+                  <Calendar
+                    mode='single'
+                    selected={field.value}
+                    onSelect={field.onChange}
+                    disabled={(date) =>
+                      date > new Date() || date < new Date('1900-01-01')
+                    }
+                    initialFocus
+                  />
+                </PopoverContent>
+              </Popover>
+            </FormItem>
+          )}
+        />
+        <Button
+          type='submit'
+          disabled={!form.formState.isValid || form.formState.isSubmitting}
+        >
+          {form.formState.isSubmitting ? (
+            <ReloadIcon className='mr-2 h-4 w-4 animate-spin' />
+          ) : null}
+          Add Todo
+        </Button>
+      </form>
+    </Form>
   );
 }
