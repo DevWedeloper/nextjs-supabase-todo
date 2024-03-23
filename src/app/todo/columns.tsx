@@ -58,9 +58,7 @@ export const columns: ColumnDef<Todo>[] = [
       );
     },
     cell: ({ row, column }) =>
-      moment(new Date(row.getValue(column.id))).format(
-        'MMMM Do YYYY, h:mm:ss a',
-      ),
+      moment(new Date(row.getValue(column.id))).format('MM-DD-YYYY, hh:mm A'),
   },
   {
     accessorKey: 'due_date',
@@ -76,9 +74,7 @@ export const columns: ColumnDef<Todo>[] = [
       );
     },
     cell: ({ row, column }) =>
-      moment(new Date(row.getValue(column.id))).format(
-        'MMMM Do YYYY, h:mm:ss a',
-      ),
+      moment(new Date(row.getValue(column.id))).format('MM-DD-YYYY, hh:mm A'),
   },
   {
     accessorKey: 'completed',
