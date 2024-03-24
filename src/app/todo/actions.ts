@@ -31,7 +31,7 @@ export async function editTodo(id: string, formData: TAddTodoSchema) {
     .from('todo')
     .update({
       task: formData.task,
-      due_date: formData.deadline?.toISOString(),
+      due_date: formData.deadline,
     })
     .eq('id', id);
 

@@ -18,7 +18,7 @@ export async function addTodo(formData: TAddTodoSchema) {
   const { error } = await supabase
     .from('todo')
     .insert({
-      due_date: formData.deadline?.toISOString(),
+      due_date: formData.deadline,
       task: formData.task,
     });
 
