@@ -8,6 +8,7 @@ import { ArrowUpDown, Pencil, Trash2 } from 'lucide-react';
 import moment from 'moment';
 import { Todo } from '../../../types';
 import { deleteTodo, updateCompletedStatus } from './actions';
+import EditTodo from './edit-todo';
 
 export const columns: ColumnDef<Todo>[] = [
   {
@@ -122,9 +123,16 @@ export const columns: ColumnDef<Todo>[] = [
 
       return (
         <div className='flex gap-2'>
-          <Button variant='outline' size='icon'>
-            <Pencil className='h-4 w-4 text-green-500' />
-          </Button>
+          <EditTodo
+            dialogTrigger={
+              <Button variant='outline' size='icon'>
+                <Pencil className='h-4 w-4 text-green-500' />
+              </Button>
+            }
+            id={row.original.id}
+            task={row.original.task}
+            deadline={row.original.due_date}
+          />
           <Button variant='outline' size='icon' onClick={handleDelete}>
             <Trash2 className='h-4 w-4 text-red-500' />
           </Button>
