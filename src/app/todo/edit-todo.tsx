@@ -1,3 +1,4 @@
+import { toastError } from '@/components/toasts';
 import { Button } from '@/components/ui/button';
 import { Calendar } from '@/components/ui/calendar';
 import {
@@ -26,6 +27,7 @@ import { CalendarIcon, ReloadIcon } from '@radix-ui/react-icons';
 import { Popover } from '@radix-ui/react-popover';
 import { format } from 'date-fns';
 import { useForm } from 'react-hook-form';
+import { editTodo } from './actions';
 
 export default function EditTodo({
   dialogTrigger,
@@ -47,7 +49,23 @@ export default function EditTodo({
   });
 
   const onSubmit = async (values: TAddTodoSchema) => {
-    console.log(id, values);
+    const { error } = await editTodo(id.toString(), values);
+
+    if (error) {
+      if ('task' in error) {
+        form.setError('task', { type: 'server', message: error.task });
+      }
+      if ('deadline' in error) {
+        form.setError('deadline', {
+          type: 'server',
+          message: error.deadline,
+        });
+      }
+      if ('editTodoError' in error) {
+        toastError(`${error.editTodoError}`);
+        form.setError('root', { type: 'server', message: error.editTodoError });
+      }
+    }
   };
 
   return (
@@ -110,16 +128,12 @@ export default function EditTodo({
                       />
                     </PopoverContent>
                   </Popover>
+                  <FormMessage />
                 </FormItem>
               )}
             />
             <DialogFooter>
-              <Button
-                type='submit'
-                disabled={
-                  !form.formState.isValid || form.formState.isSubmitting
-                }
-              >
+              <Button type='submit' disabled={form.formState.isSubmitting}>
                 {form.formState.isSubmitting && (
                   <ReloadIcon className='mr-2 h-4 w-4 animate-spin' />
                 )}
