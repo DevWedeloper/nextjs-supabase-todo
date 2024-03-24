@@ -30,6 +30,7 @@ export default function AddTodo() {
     resolver: zodResolver(todoSchema),
     defaultValues: {
       task: '',
+      deadline: null,
     },
   });
 
@@ -103,7 +104,9 @@ export default function AddTodo() {
                   <Calendar
                     mode='single'
                     selected={field.value ? new Date(field.value) : undefined}
-                    onSelect={field.onChange}
+                    onSelect={(date) =>
+                      field.onChange(date ? date.toISOString() : null)
+                    }
                     disabled={(date) => date < new Date()}
                     initialFocus
                   />

@@ -124,7 +124,9 @@ export default function EditTodo({
                         selected={
                           field.value ? new Date(field.value) : undefined
                         }
-                        onSelect={field.onChange}
+                        onSelect={(date) =>
+                          field.onChange(date ? date.toISOString() : null)
+                        }
                         disabled={(date) => date < new Date()}
                         initialFocus
                       />
