@@ -20,6 +20,7 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { convertToUTCWithoutZ } from '@/lib/date-converter';
 import { TTodoSchema, todoSchema } from '@/lib/types';
 import { cn } from '@/lib/utils';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -124,9 +125,13 @@ export default function EditTodo({
                         selected={
                           field.value ? new Date(field.value) : undefined
                         }
-                        onSelect={(date) =>
-                          field.onChange(date ? date.toISOString() : null)
-                        }
+                        onSelect={(date) => {
+                          field.onChange(
+                            date
+                              ? convertToUTCWithoutZ(date.toISOString())
+                              : null,
+                          );
+                        }}
                         disabled={(date) => date < new Date()}
                         initialFocus
                       />
@@ -137,7 +142,12 @@ export default function EditTodo({
               )}
             />
             <DialogFooter>
-              <Button type='submit' disabled={form.formState.isSubmitting}>
+              <Button
+                type='submit'
+                disabled={
+                  form.formState.isSubmitting || !form.formState.isDirty
+                }
+              >
                 {form.formState.isSubmitting && (
                   <ReloadIcon className='mr-2 h-4 w-4 animate-spin' />
                 )}
