@@ -4,7 +4,7 @@ export type Stringify<T> = {
   [K in keyof T]: string;
 };
 
-export const addTodoSchema = z.object({
+export const todoSchema = z.object({
   task: z.string().min(1, 'Task is required'),
   deadline: z
     .string()
@@ -22,4 +22,4 @@ export const addTodoSchema = z.object({
     ),
 });
 
-export type TAddTodoSchema = z.infer<typeof addTodoSchema>;
+export type TTodoSchema = z.infer<typeof todoSchema>;

@@ -20,7 +20,7 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { PopoverContent, PopoverTrigger } from '@/components/ui/popover';
-import { TAddTodoSchema, addTodoSchema } from '@/lib/types';
+import { TTodoSchema, todoSchema } from '@/lib/types';
 import { cn } from '@/lib/utils';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { CalendarIcon, ReloadIcon } from '@radix-ui/react-icons';
@@ -40,15 +40,15 @@ export default function EditTodo({
   task: string;
   deadline: string | null;
 }) {
-  const form = useForm<TAddTodoSchema>({
-    resolver: zodResolver(addTodoSchema),
+  const form = useForm<TTodoSchema>({
+    resolver: zodResolver(todoSchema),
     defaultValues: {
       task,
       deadline,
     },
   });
 
-  const onSubmit = async (values: TAddTodoSchema) => {
+  const onSubmit = async (values: TTodoSchema) => {
     const { error } = await editTodo(id.toString(), values);
 
     if (error) {

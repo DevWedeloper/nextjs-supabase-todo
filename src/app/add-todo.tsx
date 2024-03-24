@@ -16,7 +16,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover';
-import { TAddTodoSchema, addTodoSchema } from '@/lib/types';
+import { TTodoSchema, todoSchema } from '@/lib/types';
 import { cn } from '@/lib/utils';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { ReloadIcon } from '@radix-ui/react-icons';
@@ -26,14 +26,14 @@ import { useForm } from 'react-hook-form';
 import { addTodo } from './actions';
 
 export default function AddTodo() {
-  const form = useForm<TAddTodoSchema>({
-    resolver: zodResolver(addTodoSchema),
+  const form = useForm<TTodoSchema>({
+    resolver: zodResolver(todoSchema),
     defaultValues: {
       task: '',
     },
   });
 
-  const onSubmit = async (values: TAddTodoSchema) => {
+  const onSubmit = async (values: TTodoSchema) => {
     const { error } = await addTodo(values);
 
     if (error) {

@@ -1,6 +1,6 @@
 'use server';
 
-import { Stringify, TAddTodoSchema, addTodoSchema } from '@/lib/types';
+import { Stringify, TTodoSchema, todoSchema } from '@/lib/types';
 import { createClient } from '@/utils/supabase/server';
 import { revalidatePath } from 'next/cache';
 
@@ -16,9 +16,9 @@ export async function updateCompletedStatus(id: string, completed: boolean) {
   return { error: error ? error.message : null };
 }
 
-export async function editTodo(id: string, formData: TAddTodoSchema) {
-  const result = addTodoSchema.safeParse(formData);
-  let zodErrors: Partial<Stringify<TAddTodoSchema>> = {};
+export async function editTodo(id: string, formData: TTodoSchema) {
+  const result = todoSchema.safeParse(formData);
+  let zodErrors: Partial<Stringify<TTodoSchema>> = {};
   if (!result.success) {
     result.error.issues.forEach((issue) => {
       zodErrors = { ...zodErrors, [issue.path[0]]: issue.message };
