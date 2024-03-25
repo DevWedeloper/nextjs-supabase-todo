@@ -52,6 +52,7 @@ export const columns: ColumnDef<Todo>[] = [
         </Button>
       );
     },
+    cell: ({ row }) => <p className='max-w-xs truncate'>{row.original.task}</p>,
   },
   {
     accessorKey: 'created_at',
