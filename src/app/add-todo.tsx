@@ -76,7 +76,7 @@ export default function AddTodo() {
             </FormItem>
           )}
         />
-        <div className='flex w-full justify-between md:w-auto'>
+        <div className='flex w-full justify-between gap-2 md:w-auto'>
           <FormField
             control={form.control}
             name='deadline'
