@@ -62,7 +62,7 @@ export default function AddTodo() {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className='flex w-full items-baseline space-x-2'
+        className='flex w-full flex-col items-baseline space-y-2 md:flex-row md:space-x-2 md:space-y-0'
       >
         <FormField
           control={form.control}
@@ -76,54 +76,56 @@ export default function AddTodo() {
             </FormItem>
           )}
         />
-        <FormField
-          control={form.control}
-          name='deadline'
-          render={({ field }) => (
-            <FormItem className='flex flex-col'>
-              <Popover>
-                <PopoverTrigger asChild>
-                  <FormControl>
-                    <Button
-                      variant={'outline'}
-                      className={cn(
-                        'font-normal',
-                        !field.value && 'text-muted-foreground',
-                      )}
-                    >
-                      {field.value ? (
-                        format(field.value, 'PPP')
-                      ) : (
-                        <span>Pick a date</span>
-                      )}
-                      <CalendarIcon className='ml-auto h-4 w-4 opacity-50' />
-                    </Button>
-                  </FormControl>
-                </PopoverTrigger>
-                <PopoverContent className='w-auto p-0' align='start'>
-                  <Calendar
-                    mode='single'
-                    selected={field.value ? new Date(field.value) : undefined}
-                    onSelect={(date) =>
-                      field.onChange(date ? date.toISOString() : null)
-                    }
-                    disabled={(date) => date < new Date()}
-                    initialFocus
-                  />
-                </PopoverContent>
-              </Popover>
-            </FormItem>
-          )}
-        />
-        <Button
-          type='submit'
-          disabled={!form.formState.isValid || form.formState.isSubmitting}
-        >
-          {form.formState.isSubmitting && (
-            <ReloadIcon className='mr-2 h-4 w-4 animate-spin' />
-          )}
-          Add Todo
-        </Button>
+        <div className='flex w-full justify-between md:w-auto'>
+          <FormField
+            control={form.control}
+            name='deadline'
+            render={({ field }) => (
+              <FormItem className='flex flex-col'>
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <FormControl>
+                      <Button
+                        variant={'outline'}
+                        className={cn(
+                          'font-normal',
+                          !field.value && 'text-muted-foreground',
+                        )}
+                      >
+                        {field.value ? (
+                          format(field.value, 'PPP')
+                        ) : (
+                          <span>Pick a date</span>
+                        )}
+                        <CalendarIcon className='ml-auto h-4 w-4 opacity-50' />
+                      </Button>
+                    </FormControl>
+                  </PopoverTrigger>
+                  <PopoverContent className='w-auto p-0' align='start'>
+                    <Calendar
+                      mode='single'
+                      selected={field.value ? new Date(field.value) : undefined}
+                      onSelect={(date) =>
+                        field.onChange(date ? date.toISOString() : null)
+                      }
+                      disabled={(date) => date < new Date()}
+                      initialFocus
+                    />
+                  </PopoverContent>
+                </Popover>
+              </FormItem>
+            )}
+          />
+          <Button
+            type='submit'
+            disabled={!form.formState.isValid || form.formState.isSubmitting}
+          >
+            {form.formState.isSubmitting && (
+              <ReloadIcon className='mr-2 h-4 w-4 animate-spin' />
+            )}
+            Add Todo
+          </Button>
+        </div>
       </form>
     </Form>
   );
