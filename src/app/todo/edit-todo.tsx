@@ -101,7 +101,11 @@ export default function EditTodo({
                 <FormItem>
                   <FormLabel>Task</FormLabel>
                   <FormControl>
-                    <Textarea placeholder='Enter your task' {...field} />
+                    <Textarea
+                      placeholder='Enter your task'
+                      {...field}
+                      className='max-h-64'
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
