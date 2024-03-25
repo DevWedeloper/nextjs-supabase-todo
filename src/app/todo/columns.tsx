@@ -3,8 +3,14 @@
 import { toastError } from '@/components/toasts';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@/components/ui/tooltip';
 import { ColumnDef } from '@tanstack/react-table';
-import { ArrowUpDown, Pencil, Trash2 } from 'lucide-react';
+import { ArrowUpDown, CircleAlert, Pencil, Trash2 } from 'lucide-react';
 import moment from 'moment';
 import { Todo } from '../../../types';
 import { deleteTodo, updateCompletedStatus } from './actions';
@@ -77,11 +83,32 @@ export const columns: ColumnDef<Todo>[] = [
       );
     },
     cell: ({ row, column }) => {
+      const dueDate = row.original.due_date;
+      const currentDate = new Date();
+      const overdue = dueDate && new Date(dueDate) < currentDate;
+
       const value = row.getValue(column.id);
       if (value === null || value === undefined) {
         return 'n/a';
       }
-      return moment(new Date(value as Date)).format('MM-DD-YYYY, hh:mm A');
+
+      return (
+        <div className='flex items-center gap-2'>
+          {moment(new Date(value as Date)).format('MM-DD-YYYY, hh:mm A')}
+          {overdue && (
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <CircleAlert className='text-red-500' />
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>This task is overdue.</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+          )}
+        </div>
+      );
     },
   },
   {
