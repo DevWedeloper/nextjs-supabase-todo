@@ -96,7 +96,7 @@ export const columns: ColumnDef<Todo>[] = [
         <div className='flex items-center gap-2'>
           {moment(new Date(value as Date)).format('MM-DD-YYYY, hh:mm A')}
           {overdue && (
-            <TooltipProvider>
+            <TooltipProvider disableHoverableContent>
               <Tooltip>
                 <TooltipTrigger asChild>
                   <CircleAlert className='text-red-500' />
