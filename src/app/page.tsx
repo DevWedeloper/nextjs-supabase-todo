@@ -5,16 +5,13 @@ import { DataTable } from './todo/data-table';
 
 export default async function Home() {
   const supabase = createClient();
-  const { data } = await supabase
-    .from('todo')
-    .select()
-    .order('task');
+  const { data } = await supabase.from('todo').select().order('task');
 
   return (
     <div className='flex min-h-screen items-center justify-center p-4'>
       <div className='flex w-full flex-col gap-4'>
         <AddTodo />
-        {data && <DataTable columns={columns} data={data} />}
+        <DataTable columns={columns} data={data ?? []} />
       </div>
     </div>
   );
