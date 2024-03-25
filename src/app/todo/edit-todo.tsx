@@ -18,8 +18,8 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
 import { PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { Textarea } from '@/components/ui/textarea';
 import { convertToUTCWithoutZ } from '@/lib/date-converter';
 import { TTodoSchema, todoSchema } from '@/lib/types';
 import { cn } from '@/lib/utils';
@@ -101,7 +101,7 @@ export default function EditTodo({
                 <FormItem>
                   <FormLabel>Task</FormLabel>
                   <FormControl>
-                    <Input placeholder='Enter your task' {...field} />
+                    <Textarea placeholder='Enter your task' {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
