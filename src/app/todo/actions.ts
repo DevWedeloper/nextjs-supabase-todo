@@ -27,7 +27,7 @@ export async function editTodo(id: string, formData: TTodoSchema) {
   }
 
   const supabase = createClient();
-  const { error } = await supabase
+  const { data, error } = await supabase
     .from('todo')
     .update({
       task: formData.task,
@@ -37,7 +37,7 @@ export async function editTodo(id: string, formData: TTodoSchema) {
 
   revalidatePath('/');
 
-  return { error: error ? { editTodoError: error.message } : null };
+  return { data, error: error ? { editTodoError: error.message } : null };
 }
 
 export async function deleteTodo(id: string) {

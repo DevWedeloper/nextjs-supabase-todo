@@ -27,7 +27,8 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { CalendarIcon, ReloadIcon } from '@radix-ui/react-icons';
 import { Popover } from '@radix-ui/react-popover';
 import { format } from 'date-fns';
-import { useForm } from 'react-hook-form';
+import { useOptimistic } from 'react';
+import { useForm, useWatch } from 'react-hook-form';
 import { editTodo } from './actions';
 
 export default function EditTodo({
@@ -49,8 +50,20 @@ export default function EditTodo({
     },
   });
 
+  const [
+    { task: taskOptimistic, deadline: deadlineOptimistic },
+    addOptimisticData,
+  ] = useOptimistic<TTodoSchema>({ task, deadline });
+
+  const taskWatch = useWatch({ control: form.control, name: 'task' });
+  const deadlineWatch = useWatch({ control: form.control, name: 'deadline' });
+
   const onSubmit = async (values: TTodoSchema) => {
-    const { error } = await editTodo(id.toString(), values);
+    const { data, error } = await editTodo(id.toString(), values);
+
+    if (data) {
+      addOptimisticData(data);
+    }
 
     if (error) {
       if ('task' in error) {
@@ -145,7 +158,9 @@ export default function EditTodo({
               <Button
                 type='submit'
                 disabled={
-                  form.formState.isSubmitting || !form.formState.isDirty
+                  form.formState.isSubmitting ||
+                  (taskWatch === taskOptimistic &&
+                    deadlineWatch === deadlineOptimistic)
                 }
               >
                 {form.formState.isSubmitting && (
