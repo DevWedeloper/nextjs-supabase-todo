@@ -25,14 +25,12 @@ export default async function Home({
   const { data, count } = await query
     .order(sortBy, { ascending: sortOrder === 'asc' })
     .range(offset, offset + pageSize - 1);
-  
-  console.log(count);
 
   return (
     <div className='flex min-h-screen items-center justify-center p-4'>
       <div className='flex w-full flex-col gap-4'>
         <AddTodo />
-        <DataTable columns={columns} data={data ?? []} />
+        <DataTable columns={columns} data={data ?? []} count={count ?? 0} />
       </div>
     </div>
   );
