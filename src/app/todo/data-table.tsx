@@ -7,7 +7,6 @@ import {
   DropdownMenuContent,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { Input } from '@/components/ui/input';
 import {
   Table,
   TableBody,
@@ -30,6 +29,7 @@ import {
 } from '@tanstack/react-table';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import * as React from 'react';
+import SearchTask from './search-task';
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -87,14 +87,7 @@ export function DataTable<TData, TValue>({
   return (
     <div className='w-full'>
       <div className='flex items-center py-4'>
-        <Input
-          placeholder='Filter tasks...'
-          value={(table.getColumn('task')?.getFilterValue() as string) ?? ''}
-          onChange={(event) =>
-            table.getColumn('task')?.setFilterValue(event.target.value)
-          }
-          className='max-w-sm'
-        />
+        <SearchTask />
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant='outline' className='ml-auto'>
