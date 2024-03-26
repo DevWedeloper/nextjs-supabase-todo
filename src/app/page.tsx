@@ -26,7 +26,7 @@ export default async function Home({
     .order(sortBy, { ascending: sortOrder === 'asc' })
     .range(offset, offset + pageSize - 1);
 
-  const totalPages = Math.ceil(count ?? 0 / pageSize);
+  const totalPages = Math.ceil((count ?? 0) / pageSize);
 
   return (
     <div className='flex min-h-screen items-center justify-center p-4'>
