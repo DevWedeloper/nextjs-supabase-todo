@@ -15,6 +15,7 @@ import moment from 'moment';
 import { Todo } from '../../../types';
 import { deleteTodo, updateCompletedStatus } from './actions';
 import EditTodo from './edit-todo';
+import ToggleTask from './toggle-task';
 
 export const columns: ColumnDef<Todo>[] = [
   {
@@ -41,17 +42,7 @@ export const columns: ColumnDef<Todo>[] = [
   },
   {
     accessorKey: 'task',
-    header: ({ column }) => {
-      return (
-        <Button
-          variant='ghost'
-          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-        >
-          Task
-          <ArrowUpDown className='ml-2 h-4 w-4' />
-        </Button>
-      );
-    },
+    header: () => <ToggleTask />,
     cell: ({ row }) => <p className='max-w-xs truncate'>{row.original.task}</p>,
   },
   {
