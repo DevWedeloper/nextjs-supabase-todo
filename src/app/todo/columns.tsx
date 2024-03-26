@@ -10,11 +10,14 @@ import {
   TooltipTrigger,
 } from '@/components/ui/tooltip';
 import { ColumnDef } from '@tanstack/react-table';
-import { ArrowUpDown, CircleAlert, Pencil, Trash2 } from 'lucide-react';
+import { CircleAlert, Pencil, Trash2 } from 'lucide-react';
 import moment from 'moment';
 import { Todo } from '../../../types';
 import { deleteTodo, updateCompletedStatus } from './actions';
 import EditTodo from './edit-todo';
+import ToggleCreatedAt from './toggle-created-at';
+import ToggleDueDate from './toggle-due-date';
+import ToggleTask from './toggle-task';
 
 export const columns: ColumnDef<Todo>[] = [
   {
@@ -40,62 +43,31 @@ export const columns: ColumnDef<Todo>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: 'task',
-    header: ({ column }) => {
-      return (
-        <Button
-          variant='ghost'
-          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-        >
-          Task
-          <ArrowUpDown className='ml-2 h-4 w-4' />
-        </Button>
-      );
-    },
+    accessorKey: 'Task',
+    header: () => <ToggleTask />,
     cell: ({ row }) => <p className='max-w-xs truncate'>{row.original.task}</p>,
   },
   {
-    accessorKey: 'created_at',
-    header: ({ column }) => {
-      return (
-        <Button
-          variant='ghost'
-          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-        >
-          Created At
-          <ArrowUpDown className='ml-2 h-4 w-4' />
-        </Button>
-      );
-    },
-    cell: ({ row, column }) =>
-      moment(new Date(row.getValue(column.id))).format('MM-DD-YYYY, hh:mm A'),
+    accessorKey: 'Created At',
+    header: () => <ToggleCreatedAt />,
+    cell: ({ row }) =>
+      moment(new Date(row.original.created_at)).format('MM-DD-YYYY, hh:mm A'),
   },
   {
-    accessorKey: 'due_date',
-    header: ({ column }) => {
-      return (
-        <Button
-          variant='ghost'
-          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-        >
-          Due Date
-          <ArrowUpDown className='ml-2 h-4 w-4' />
-        </Button>
-      );
-    },
-    cell: ({ row, column }) => {
+    accessorKey: 'Due Date',
+    header: () => <ToggleDueDate />,
+    cell: ({ row }) => {
       const dueDate = row.original.due_date;
       const currentDate = new Date();
       const overdue = dueDate && new Date(dueDate) < currentDate;
 
-      const value = row.getValue(column.id);
-      if (value === null || value === undefined) {
+      if (dueDate === null || dueDate === undefined) {
         return 'n/a';
       }
 
       return (
         <div className='flex items-center gap-2'>
-          {moment(new Date(value as Date)).format('MM-DD-YYYY, hh:mm A')}
+          {moment(dueDate).format('MM-DD-YYYY, hh:mm A')}
           {overdue && (
             <TooltipProvider disableHoverableContent>
               <Tooltip>
@@ -113,7 +85,7 @@ export const columns: ColumnDef<Todo>[] = [
     },
   },
   {
-    accessorKey: 'completed',
+    accessorKey: 'Completed',
     header: 'Completed',
     cell: ({ row, column }) => {
       const handleChange = async (completed: boolean) => {
@@ -139,7 +111,7 @@ export const columns: ColumnDef<Todo>[] = [
     },
   },
   {
-    id: 'actions',
+    id: 'Actions',
     cell: ({ row }) => {
       const handleDelete = async () => {
         const { error } = await deleteTodo(row.original.id.toString());
