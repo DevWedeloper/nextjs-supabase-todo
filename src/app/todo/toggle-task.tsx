@@ -11,9 +11,11 @@ export default function ToggleTask() {
 
   const onclick = () => {
     const params = new URLSearchParams(searchParams);
+    if (params.get('sortBy') === 'task') {
+      const sortOrder = params.get('sortOrder') ?? 'asc';
+      params.set('sortOrder', sortOrder === 'asc' ? 'desc' : 'asc');
+    }
     params.set('sortBy', 'task');
-    const sortOrder = params.get('sortOrder') ?? 'asc';
-    params.set('sortOrder', sortOrder === 'asc' ? 'desc' : 'asc');
     replace(`${pathname}?${params.toString()}`);
   };
 

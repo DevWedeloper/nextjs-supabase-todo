@@ -11,9 +11,11 @@ export default function ToggleCreatedAt() {
 
   const onclick = () => {
     const params = new URLSearchParams(searchParams);
+    if (params.get('sortBy') === 'created_at') {
+      const sortOrder = params.get('sortOrder') ?? 'asc';
+      params.set('sortOrder', sortOrder === 'asc' ? 'desc' : 'asc');
+    }
     params.set('sortBy', 'created_at');
-    const sortOrder = params.get('sortOrder') ?? 'asc';
-    params.set('sortOrder', sortOrder === 'asc' ? 'desc' : 'asc');
     replace(`${pathname}?${params.toString()}`);
   };
 
