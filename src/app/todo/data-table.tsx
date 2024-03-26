@@ -28,6 +28,7 @@ import {
   getSortedRowModel,
   useReactTable,
 } from '@tanstack/react-table';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import * as React from 'react';
 
 interface DataTableProps<TData, TValue> {
@@ -72,6 +73,16 @@ export function DataTable<TData, TValue>({
       rowSelection,
     },
   });
+
+  const searchParams = useSearchParams();
+  const pathname = usePathname();
+  const { replace } = useRouter();
+
+  const onClick = (page: number) => {
+    const params = new URLSearchParams(searchParams);
+    params.set('page', page.toString());
+    replace(`${pathname}?${params.toString()}`);
+  };
 
   return (
     <div className='w-full'>
@@ -169,7 +180,7 @@ export function DataTable<TData, TValue>({
         <Button
           variant='outline'
           size='sm'
-          onClick={() => table.previousPage()}
+          onClick={() => onClick(page - 1)}
           disabled={page <= 1}
         >
           Previous
@@ -177,7 +188,7 @@ export function DataTable<TData, TValue>({
         <Button
           variant='outline'
           size='sm'
-          onClick={() => table.nextPage()}
+          onClick={() => onClick(page + 1)}
           disabled={page >= totalPages}
         >
           Next
