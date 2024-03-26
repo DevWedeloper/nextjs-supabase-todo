@@ -50,25 +50,24 @@ export const columns: ColumnDef<Todo>[] = [
   {
     accessorKey: 'Created At',
     header: () => <ToggleCreatedAt />,
-    cell: ({ row, column }) =>
-      moment(new Date(row.getValue(column.id))).format('MM-DD-YYYY, hh:mm A'),
+    cell: ({ row }) =>
+      moment(new Date(row.original.created_at)).format('MM-DD-YYYY, hh:mm A'),
   },
   {
     accessorKey: 'Due Date',
     header: () => <ToggleDueDate />,
-    cell: ({ row, column }) => {
+    cell: ({ row }) => {
       const dueDate = row.original.due_date;
       const currentDate = new Date();
       const overdue = dueDate && new Date(dueDate) < currentDate;
 
-      const value = row.getValue(column.id);
-      if (value === null || value === undefined) {
+      if (dueDate === null || dueDate === undefined) {
         return 'n/a';
       }
 
       return (
         <div className='flex items-center gap-2'>
-          {moment(new Date(value as Date)).format('MM-DD-YYYY, hh:mm A')}
+          {moment(dueDate).format('MM-DD-YYYY, hh:mm A')}
           {overdue && (
             <TooltipProvider disableHoverableContent>
               <Tooltip>
