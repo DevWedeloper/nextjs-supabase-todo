@@ -43,18 +43,18 @@ export const columns: ColumnDef<Todo>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: 'task',
+    accessorKey: 'Task',
     header: () => <ToggleTask />,
     cell: ({ row }) => <p className='max-w-xs truncate'>{row.original.task}</p>,
   },
   {
-    accessorKey: 'created_at',
+    accessorKey: 'Created At',
     header: () => <ToggleCreatedAt />,
     cell: ({ row, column }) =>
       moment(new Date(row.getValue(column.id))).format('MM-DD-YYYY, hh:mm A'),
   },
   {
-    accessorKey: 'due_date',
+    accessorKey: 'Due Date',
     header: () => <ToggleDueDate />,
     cell: ({ row, column }) => {
       const dueDate = row.original.due_date;
@@ -86,7 +86,7 @@ export const columns: ColumnDef<Todo>[] = [
     },
   },
   {
-    accessorKey: 'completed',
+    accessorKey: 'Completed',
     header: 'Completed',
     cell: ({ row, column }) => {
       const handleChange = async (completed: boolean) => {
@@ -112,7 +112,7 @@ export const columns: ColumnDef<Todo>[] = [
     },
   },
   {
-    id: 'actions',
+    id: 'Actions',
     cell: ({ row }) => {
       const handleDelete = async () => {
         const { error } = await deleteTodo(row.original.id.toString());
