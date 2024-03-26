@@ -10,12 +10,13 @@ import {
   TooltipTrigger,
 } from '@/components/ui/tooltip';
 import { ColumnDef } from '@tanstack/react-table';
-import { ArrowUpDown, CircleAlert, Pencil, Trash2 } from 'lucide-react';
+import { CircleAlert, Pencil, Trash2 } from 'lucide-react';
 import moment from 'moment';
 import { Todo } from '../../../types';
 import { deleteTodo, updateCompletedStatus } from './actions';
 import EditTodo from './edit-todo';
 import ToggleCreatedAt from './toggle-created-at';
+import ToggleDueDate from './toggle-due-date';
 import ToggleTask from './toggle-task';
 
 export const columns: ColumnDef<Todo>[] = [
@@ -54,17 +55,7 @@ export const columns: ColumnDef<Todo>[] = [
   },
   {
     accessorKey: 'due_date',
-    header: ({ column }) => {
-      return (
-        <Button
-          variant='ghost'
-          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-        >
-          Due Date
-          <ArrowUpDown className='ml-2 h-4 w-4' />
-        </Button>
-      );
-    },
+    header: () => <ToggleDueDate />,
     cell: ({ row, column }) => {
       const dueDate = row.original.due_date;
       const currentDate = new Date();
