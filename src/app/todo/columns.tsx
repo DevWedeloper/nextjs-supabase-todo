@@ -15,6 +15,7 @@ import moment from 'moment';
 import { Todo } from '../../../types';
 import { deleteTodo, updateCompletedStatus } from './actions';
 import EditTodo from './edit-todo';
+import ToggleCreatedAt from './toggle-created-at';
 import ToggleTask from './toggle-task';
 
 export const columns: ColumnDef<Todo>[] = [
@@ -47,17 +48,7 @@ export const columns: ColumnDef<Todo>[] = [
   },
   {
     accessorKey: 'created_at',
-    header: ({ column }) => {
-      return (
-        <Button
-          variant='ghost'
-          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-        >
-          Created At
-          <ArrowUpDown className='ml-2 h-4 w-4' />
-        </Button>
-      );
-    },
+    header: () => <ToggleCreatedAt />,
     cell: ({ row, column }) =>
       moment(new Date(row.getValue(column.id))).format('MM-DD-YYYY, hh:mm A'),
   },
