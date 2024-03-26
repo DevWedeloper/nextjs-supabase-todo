@@ -34,12 +34,16 @@ interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
   count: number;
+  page: number;
+  totalPages: number;
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
   count,
+  page,
+  totalPages,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
@@ -166,7 +170,7 @@ export function DataTable<TData, TValue>({
           variant='outline'
           size='sm'
           onClick={() => table.previousPage()}
-          disabled={!table.getCanPreviousPage()}
+          disabled={page <= 1}
         >
           Previous
         </Button>
@@ -174,7 +178,7 @@ export function DataTable<TData, TValue>({
           variant='outline'
           size='sm'
           onClick={() => table.nextPage()}
-          disabled={!table.getCanNextPage()}
+          disabled={page >= totalPages}
         >
           Next
         </Button>

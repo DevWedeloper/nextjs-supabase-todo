@@ -26,11 +26,19 @@ export default async function Home({
     .order(sortBy, { ascending: sortOrder === 'asc' })
     .range(offset, offset + pageSize - 1);
 
+  const totalPages = Math.ceil(count ?? 0 / pageSize);
+
   return (
     <div className='flex min-h-screen items-center justify-center p-4'>
       <div className='flex w-full flex-col gap-4'>
         <AddTodo />
-        <DataTable columns={columns} data={data ?? []} count={count ?? 0} />
+        <DataTable
+          columns={columns}
+          data={data ?? []}
+          count={count ?? 0}
+          page={page}
+          totalPages={totalPages}
+        />
       </div>
     </div>
   );
