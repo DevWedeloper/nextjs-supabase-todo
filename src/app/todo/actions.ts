@@ -48,3 +48,12 @@ export async function deleteTodo(id: string) {
 
   return { error: error ? error.message : null };
 }
+
+export async function deleteAllSelectedTodos(ids: number[]) {
+  const supabase = createClient();
+  const { error } = await supabase.from('todo').delete().in('id', ids);
+
+  revalidatePath('/');
+
+  return { error: error ? error.message : null };
+}

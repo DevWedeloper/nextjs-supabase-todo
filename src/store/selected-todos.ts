@@ -4,6 +4,7 @@ type SelectedTodosState = {
   selectedTodoIds: number[];
   setSelectedTodoIds: (ids: number[]) => void;
   toggleSelectedTodoId: (id: number) => void;
+  clearSelectedTodoIds: () => void;
 };
 
 export const useSelectedTodosStore = create<SelectedTodosState>((set) => ({
@@ -15,4 +16,5 @@ export const useSelectedTodosStore = create<SelectedTodosState>((set) => ({
         ? state.selectedTodoIds.filter((selectedId) => selectedId !== id)
         : [...state.selectedTodoIds, id],
     })),
+  clearSelectedTodoIds: () => set({ selectedTodoIds: [] }),
 }));
