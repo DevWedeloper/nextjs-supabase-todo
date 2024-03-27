@@ -30,6 +30,7 @@ import {
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import * as React from 'react';
 import SearchTask from './search-task';
+import SelectedTodosInfo from './selected-todos-info';
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -166,10 +167,7 @@ export function DataTable<TData, TValue>({
         </Table>
       </div>
       <div className='flex items-center justify-end space-x-2 py-4'>
-        <div className='text-muted-foreground flex-1 text-sm'>
-          {table.getFilteredSelectedRowModel().rows.length} of {count} row(s)
-          selected.
-        </div>
+        <SelectedTodosInfo count={count} />
         <Button
           variant='outline'
           size='sm'

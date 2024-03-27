@@ -40,9 +40,18 @@ export async function editTodo(id: string, formData: TTodoSchema) {
   return { data, error: error ? { editTodoError: error.message } : null };
 }
 
-export async function deleteTodo(id: string) {
+export async function deleteTodo(id: number) {
   const supabase = createClient();
   const { error } = await supabase.from('todo').delete().eq('id', id);
+
+  revalidatePath('/');
+
+  return { error: error ? error.message : null };
+}
+
+export async function deleteAllSelectedTodos(ids: number[]) {
+  const supabase = createClient();
+  const { error } = await supabase.from('todo').delete().in('id', ids);
 
   revalidatePath('/');
 

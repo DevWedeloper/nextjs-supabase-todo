@@ -10,11 +10,14 @@ import {
   TooltipTrigger,
 } from '@/components/ui/tooltip';
 import { ColumnDef } from '@tanstack/react-table';
-import { CircleAlert, Pencil, Trash2 } from 'lucide-react';
+import { CircleAlert, Pencil } from 'lucide-react';
 import moment from 'moment';
 import { Todo } from '../../../types';
-import { deleteTodo, updateCompletedStatus } from './actions';
+import { updateCompletedStatus } from './actions';
+import DeleteTodo from './delete-todo';
 import EditTodo from './edit-todo';
+import SelectAllTodo from './select-all-todo';
+import SelectTodo from './select-todo';
 import ToggleCreatedAt from './toggle-created-at';
 import ToggleDueDate from './toggle-due-date';
 import ToggleTask from './toggle-task';
@@ -23,22 +26,11 @@ export const columns: ColumnDef<Todo>[] = [
   {
     id: 'select',
     header: ({ table }) => (
-      <Checkbox
-        checked={
-          table.getIsAllPageRowsSelected() ||
-          (table.getIsSomePageRowsSelected() && 'indeterminate')
-        }
-        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-        aria-label='Select all'
+      <SelectAllTodo
+        ids={table.getRowModel().rows.map((row) => row.original.id)}
       />
     ),
-    cell: ({ row }) => (
-      <Checkbox
-        checked={row.getIsSelected()}
-        onCheckedChange={(value) => row.toggleSelected(!!value)}
-        aria-label='Select row'
-      />
-    ),
+    cell: ({ row }) => <SelectTodo id={row.original.id} />,
     enableSorting: false,
     enableHiding: false,
   },
@@ -113,14 +105,6 @@ export const columns: ColumnDef<Todo>[] = [
   {
     id: 'Actions',
     cell: ({ row }) => {
-      const handleDelete = async () => {
-        const { error } = await deleteTodo(row.original.id.toString());
-
-        if (error) {
-          toastError(error);
-        }
-      };
-
       return (
         <div className='flex gap-2'>
           <EditTodo
@@ -133,9 +117,7 @@ export const columns: ColumnDef<Todo>[] = [
             task={row.original.task}
             deadline={row.original.due_date}
           />
-          <Button variant='outline' size='icon' onClick={handleDelete}>
-            <Trash2 className='h-4 w-4 text-red-500' />
-          </Button>
+          <DeleteTodo id={row.original.id} />
         </div>
       );
     },
