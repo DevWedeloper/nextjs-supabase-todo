@@ -27,7 +27,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { CalendarIcon, ReloadIcon } from '@radix-ui/react-icons';
 import { Popover } from '@radix-ui/react-popover';
 import { format } from 'date-fns';
-import { useOptimistic } from 'react';
+import { useEffect, useOptimistic } from 'react';
 import { useForm, useWatch } from 'react-hook-form';
 import { editTodo } from './actions';
 
@@ -54,6 +54,11 @@ export default function EditTodo({
     { task: taskOptimistic, deadline: deadlineOptimistic },
     addOptimisticData,
   ] = useOptimistic<TTodoSchema>({ task, deadline });
+
+  useEffect(() => {
+    form.setValue('task', task);
+    form.setValue('deadline', deadline);
+  }, [task, deadline, form]);
 
   const taskWatch = useWatch({ control: form.control, name: 'task' });
   const deadlineWatch = useWatch({ control: form.control, name: 'deadline' });
