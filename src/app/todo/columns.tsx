@@ -79,7 +79,7 @@ export const columns: ColumnDef<Todo>[] = [
   {
     accessorKey: 'Completed',
     header: 'Completed',
-    cell: ({ row, column }) => {
+    cell: ({ row }) => {
       const handleChange = async (completed: boolean) => {
         const { error } = await updateCompletedStatus(
           row.original.id,
@@ -93,7 +93,7 @@ export const columns: ColumnDef<Todo>[] = [
 
       return (
         <Checkbox
-          checked={row.getValue(column.id)}
+          checked={row.original.completed}
           onCheckedChange={(value) => {
             handleChange(!!value);
           }}
