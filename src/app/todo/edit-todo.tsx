@@ -20,13 +20,13 @@ import {
 } from '@/components/ui/form';
 import { PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Textarea } from '@/components/ui/textarea';
-import { convertToUTCWithoutZ } from '@/lib/date-converter';
 import { TTodoSchema, todoSchema } from '@/lib/types';
 import { cn } from '@/lib/utils';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { CalendarIcon, ReloadIcon } from '@radix-ui/react-icons';
 import { Popover } from '@radix-ui/react-popover';
 import { format } from 'date-fns';
+import moment from 'moment';
 import { useEffect, useOptimistic } from 'react';
 import { useForm, useWatch } from 'react-hook-form';
 import { editTodo } from './actions';
@@ -150,7 +150,7 @@ export default function EditTodo({
                         onSelect={(date) => {
                           field.onChange(
                             date
-                              ? convertToUTCWithoutZ(date.toISOString())
+                              ? moment.utc(date).format('YYYY-MM-DDTHH:mm:ssZ')
                               : null,
                           );
                         }}
@@ -169,7 +169,8 @@ export default function EditTodo({
                 disabled={
                   form.formState.isSubmitting ||
                   (taskWatch === taskOptimistic &&
-                    deadlineWatch === deadlineOptimistic)
+                    deadlineWatch === deadlineOptimistic) ||
+                  !form.formState.isValid
                 }
               >
                 {form.formState.isSubmitting && (
