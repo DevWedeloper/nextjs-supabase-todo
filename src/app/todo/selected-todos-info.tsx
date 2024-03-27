@@ -1,3 +1,5 @@
+'use client';
+
 import { useSelectedTodosStore } from '@/store/selected-todos';
 
 export default function SelectedTodosInfo({ count }: { count: number }) {
