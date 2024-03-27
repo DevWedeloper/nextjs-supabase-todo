@@ -11,13 +11,13 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { useSelectedTodosStore } from '@/store/selected-todos';
-import { Trash2 } from 'lucide-react';
+import { Trash2, X } from 'lucide-react';
 import { deleteAllSelectedTodos } from './actions';
 
 export default function SelectedTodosInfo({ count }: { count: number }) {
   const { selectedTodoIds, clearSelectedTodoIds } = useSelectedTodosStore();
 
-  const handleOnClick = async () => {
+  const handleOnDeleteAllSelected = async () => {
     const { error } = await deleteAllSelectedTodos(selectedTodoIds);
 
     if (error) {
@@ -27,6 +27,10 @@ export default function SelectedTodosInfo({ count }: { count: number }) {
     if (!error) {
       clearSelectedTodoIds();
     }
+  };
+
+  const handleOnUnselectAll = () => {
+    clearSelectedTodoIds();
   };
 
   return (
@@ -48,9 +52,13 @@ export default function SelectedTodosInfo({ count }: { count: number }) {
           <DropdownMenuContent align='end'>
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={handleOnClick}>
+            <DropdownMenuItem onClick={handleOnDeleteAllSelected}>
               <Trash2 className='mr-2 h-4 w-4 text-red-500' />
               <span>Delete All</span>
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={handleOnUnselectAll}>
+              <X className='mr-2 h-4 w-4' />
+              <span>Clear All Selection</span>
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
