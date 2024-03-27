@@ -59,7 +59,7 @@ export default function EditTodo({
   const deadlineWatch = useWatch({ control: form.control, name: 'deadline' });
 
   const onSubmit = async (values: TTodoSchema) => {
-    const { data, error } = await editTodo(id.toString(), values);
+    const { data, error } = await editTodo(id, values);
 
     if (data) {
       addOptimisticData(data);

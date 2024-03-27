@@ -4,7 +4,7 @@ import { Stringify, TTodoSchema, todoSchema } from '@/lib/types';
 import { createClient } from '@/utils/supabase/server';
 import { revalidatePath } from 'next/cache';
 
-export async function updateCompletedStatus(id: string, completed: boolean) {
+export async function updateCompletedStatus(id: number, completed: boolean) {
   const supabase = createClient();
   const { error } = await supabase
     .from('todo')
@@ -16,7 +16,7 @@ export async function updateCompletedStatus(id: string, completed: boolean) {
   return { error: error ? error.message : null };
 }
 
-export async function editTodo(id: string, formData: TTodoSchema) {
+export async function editTodo(id: number, formData: TTodoSchema) {
   const result = todoSchema.safeParse(formData);
   let zodErrors: Partial<Stringify<TTodoSchema>> = {};
   if (!result.success) {

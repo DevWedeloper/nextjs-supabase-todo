@@ -82,7 +82,7 @@ export const columns: ColumnDef<Todo>[] = [
     cell: ({ row, column }) => {
       const handleChange = async (completed: boolean) => {
         const { error } = await updateCompletedStatus(
-          row.original.id.toString(),
+          row.original.id,
           completed,
         );
 
