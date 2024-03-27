@@ -48,6 +48,7 @@ export default function EditTodo({
       task,
       deadline,
     },
+    mode: 'onChange',
   });
 
   const [
