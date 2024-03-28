@@ -14,7 +14,7 @@ import moment from 'moment';
 import { Todo } from '../../../types';
 import { updateCompletedStatus } from './actions';
 import DeleteTodo from './delete-todo';
-import EditTodo from './edit-todo';
+import EditTodoTrigger from './edit-todo-trigger';
 import SelectAllTodo from './select-all-todo';
 import SelectTodo from './select-todo';
 import ToggleCreatedAt from './toggle-created-at';
@@ -106,12 +106,7 @@ export const columns: ColumnDef<Todo>[] = [
     cell: ({ row }) => {
       return (
         <div className='flex gap-2'>
-          <EditTodo
-            id={row.original.id}
-            task={row.original.task}
-            deadline={row.original.due_date}
-            last_edited={row.original.last_edited}
-          />
+          <EditTodoTrigger todo={row.original} />
           <DeleteTodo id={row.original.id} />
         </div>
       );

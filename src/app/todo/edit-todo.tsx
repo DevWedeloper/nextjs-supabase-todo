@@ -1,3 +1,5 @@
+'use client';
+
 import { toastError } from '@/components/toasts';
 import { Button } from '@/components/ui/button';
 import { Calendar } from '@/components/ui/calendar';
@@ -8,7 +10,6 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from '@/components/ui/dialog';
 import {
   Form,
@@ -22,27 +23,22 @@ import { PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Textarea } from '@/components/ui/textarea';
 import { TTodoSchema, todoSchema } from '@/lib/types';
 import { cn } from '@/lib/utils';
+import { useSelectedTodoStore } from '@/store/selected-todo';
+import { useModalStore } from '@/store/use-modal';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { CalendarIcon, ReloadIcon } from '@radix-ui/react-icons';
 import { Popover } from '@radix-ui/react-popover';
 import { format } from 'date-fns';
-import { Pencil } from 'lucide-react';
 import moment from 'moment';
-import { useEffect, useOptimistic } from 'react';
+import { startTransition, useEffect, useOptimistic } from 'react';
 import { useForm, useWatch } from 'react-hook-form';
 import { editTodo } from './actions';
 
-export default function EditTodo({
-  id,
-  task,
-  deadline,
-  last_edited,
-}: {
-  id: number;
-  task: string;
-  deadline: string | null;
-  last_edited: string;
-}) {
+export default function EditTodo() {
+  const { selectedTodo, setSelectedTodo } = useSelectedTodoStore();
+  const { id, task, due_date: deadline, last_edited } = selectedTodo || {};
+  const { isOpen, closeModal } = useModalStore();
+
   const form = useForm<TTodoSchema>({
     resolver: zodResolver(todoSchema),
     defaultValues: {
@@ -55,21 +51,33 @@ export default function EditTodo({
   const [
     { task: taskOptimistic, deadline: deadlineOptimistic },
     addOptimisticData,
-  ] = useOptimistic<TTodoSchema>({ task, deadline });
+  ] = useOptimistic<TTodoSchema>({
+    task: task || '',
+    deadline: deadline || null,
+  });
 
   useEffect(() => {
-    form.setValue('task', task);
-    form.setValue('deadline', deadline);
+    form.setValue('task', task ?? '');
+    form.setValue('deadline', deadline ?? null);
   }, [task, deadline, form]);
 
   const taskWatch = useWatch({ control: form.control, name: 'task' });
   const deadlineWatch = useWatch({ control: form.control, name: 'deadline' });
 
   const onSubmit = async (values: TTodoSchema) => {
+    startTransition(() => {
+      addOptimisticData({
+        task: form.getValues('task'),
+        deadline: form.getValues('deadline'),
+      });
+    });
+
+    if (!id) return;
+
     const { data, error } = await editTodo(id, values);
 
     if (data) {
-      addOptimisticData(data);
+      setSelectedTodo(data);
     }
 
     if (error) {
@@ -90,12 +98,7 @@ export default function EditTodo({
   };
 
   return (
-    <Dialog>
-      <DialogTrigger asChild>
-        <Button variant='outline' size='icon'>
-          <Pencil className='h-4 w-4 text-green-500' />
-        </Button>
-      </DialogTrigger>
+    <Dialog onOpenChange={closeModal} open={isOpen}>
       <DialogContent className='sm:max-w-[425px]'>
         <DialogHeader>
           <DialogTitle>Edit task</DialogTitle>
@@ -178,8 +181,7 @@ export default function EditTodo({
                 disabled={
                   form.formState.isSubmitting ||
                   (taskWatch === taskOptimistic &&
-                    deadlineWatch === deadlineOptimistic) ||
-                  !form.formState.isValid
+                    deadlineWatch === deadlineOptimistic)
                 }
               >
                 {form.formState.isSubmitting && (
