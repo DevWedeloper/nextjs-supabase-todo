@@ -30,7 +30,7 @@ import { CalendarIcon, ReloadIcon } from '@radix-ui/react-icons';
 import { Popover } from '@radix-ui/react-popover';
 import { format } from 'date-fns';
 import moment from 'moment';
-import { useEffect, useOptimistic } from 'react';
+import { startTransition, useEffect, useOptimistic } from 'react';
 import { useForm, useWatch } from 'react-hook-form';
 import { editTodo } from './actions';
 
@@ -62,12 +62,18 @@ export default function EditTodo() {
   const deadlineWatch = useWatch({ control: form.control, name: 'deadline' });
 
   const onSubmit = async (values: TTodoSchema) => {
+    startTransition(() => {
+      addOptimisticData({
+        task: form.getValues('task'),
+        deadline: form.getValues('deadline'),
+      });
+    });
+
     if (!id) return;
 
     const { data, error } = await editTodo(id, values);
 
     if (data) {
-      addOptimisticData({ task: data.task, deadline: data.due_date });
       setSelectedTodo(data);
     }
 
