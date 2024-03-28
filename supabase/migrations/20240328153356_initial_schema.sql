@@ -4,7 +4,7 @@ create table "public"."todo" (
     "task" text not null,
     "due_date" timestamp with time zone,
     "completed" boolean not null default false,
-    "last_edited" timestamp with time zone default now()
+    "last_edited" timestamp with time zone not null default now()
 );
 
 
