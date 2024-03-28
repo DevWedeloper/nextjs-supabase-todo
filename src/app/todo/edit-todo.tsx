@@ -26,21 +26,22 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { CalendarIcon, ReloadIcon } from '@radix-ui/react-icons';
 import { Popover } from '@radix-ui/react-popover';
 import { format } from 'date-fns';
+import { Pencil } from 'lucide-react';
 import moment from 'moment';
 import { useEffect, useOptimistic } from 'react';
 import { useForm, useWatch } from 'react-hook-form';
 import { editTodo } from './actions';
 
 export default function EditTodo({
-  dialogTrigger,
   id,
   task,
   deadline,
+  last_edited,
 }: {
-  dialogTrigger: React.ReactNode;
   id: number;
   task: string;
   deadline: string | null;
+  last_edited: string;
 }) {
   const form = useForm<TTodoSchema>({
     resolver: zodResolver(todoSchema),
@@ -90,7 +91,11 @@ export default function EditTodo({
 
   return (
     <Dialog>
-      <DialogTrigger asChild>{dialogTrigger}</DialogTrigger>
+      <DialogTrigger asChild>
+        <Button variant='outline' size='icon'>
+          <Pencil className='h-4 w-4 text-green-500' />
+        </Button>
+      </DialogTrigger>
       <DialogContent className='sm:max-w-[425px]'>
         <DialogHeader>
           <DialogTitle>Edit task</DialogTitle>
@@ -164,6 +169,9 @@ export default function EditTodo({
                 </FormItem>
               )}
             />
+            <div className='text-sm text-stone-500 dark:text-stone-400'>
+              Last modified: {moment(last_edited).fromNow()}
+            </div>
             <DialogFooter>
               <Button
                 type='submit'

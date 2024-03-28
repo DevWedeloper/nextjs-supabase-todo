@@ -1,7 +1,6 @@
 'use client';
 
 import { toastError } from '@/components/toasts';
-import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import {
   Tooltip,
@@ -10,7 +9,7 @@ import {
   TooltipTrigger,
 } from '@/components/ui/tooltip';
 import { ColumnDef } from '@tanstack/react-table';
-import { CircleAlert, Pencil } from 'lucide-react';
+import { CircleAlert } from 'lucide-react';
 import moment from 'moment';
 import { Todo } from '../../../types';
 import { updateCompletedStatus } from './actions';
@@ -108,14 +107,10 @@ export const columns: ColumnDef<Todo>[] = [
       return (
         <div className='flex gap-2'>
           <EditTodo
-            dialogTrigger={
-              <Button variant='outline' size='icon'>
-                <Pencil className='h-4 w-4 text-green-500' />
-              </Button>
-            }
             id={row.original.id}
             task={row.original.task}
             deadline={row.original.due_date}
+            last_edited={row.original.last_edited}
           />
           <DeleteTodo id={row.original.id} />
         </div>
