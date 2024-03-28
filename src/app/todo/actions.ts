@@ -33,7 +33,9 @@ export async function editTodo(id: number, formData: TTodoSchema) {
       task: formData.task,
       due_date: formData.deadline,
     })
-    .eq('id', id);
+    .eq('id', id)
+    .select()
+    .single();
 
   revalidatePath('/');
 
