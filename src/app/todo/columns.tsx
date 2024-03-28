@@ -110,6 +110,7 @@ export const columns: ColumnDef<Todo>[] = [
             id={row.original.id}
             task={row.original.task}
             deadline={row.original.due_date}
+            last_edited={row.original.last_edited}
           />
           <DeleteTodo id={row.original.id} />
         </div>

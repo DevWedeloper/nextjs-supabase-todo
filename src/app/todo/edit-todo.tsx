@@ -36,10 +36,12 @@ export default function EditTodo({
   id,
   task,
   deadline,
+  last_edited,
 }: {
   id: number;
   task: string;
   deadline: string | null;
+  last_edited: string;
 }) {
   const form = useForm<TTodoSchema>({
     resolver: zodResolver(todoSchema),
@@ -167,6 +169,9 @@ export default function EditTodo({
                 </FormItem>
               )}
             />
+            <div className='text-sm text-stone-500 dark:text-stone-400'>
+              Last modified: {moment(last_edited).fromNow()}
+            </div>
             <DialogFooter>
               <Button
                 type='submit'
