@@ -24,6 +24,7 @@ export default async function Home({
 
   const { data, count } = await query
     .order(sortBy, { ascending: sortOrder === 'asc' })
+    .order('id', { ascending: sortOrder === 'asc' })
     .range(offset, offset + pageSize - 1);
 
   const totalPages = Math.ceil((count ?? 0) / pageSize);
