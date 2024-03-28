@@ -51,7 +51,10 @@ export default function EditTodo() {
   const [
     { task: taskOptimistic, deadline: deadlineOptimistic },
     addOptimisticData,
-  ] = useOptimistic<TTodoSchema>({ task: '', deadline: null });
+  ] = useOptimistic<TTodoSchema>({
+    task: task || '',
+    deadline: deadline || null,
+  });
 
   useEffect(() => {
     form.setValue('task', task ?? '');
