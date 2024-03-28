@@ -6,7 +6,7 @@ interface SelectedTodoModalState {
   setSelectedTodo: (todo: Todo | null) => void;
 }
 
-export const useSelectedTodoModalStore = create<SelectedTodoModalState>(
+export const useSelectedTodoStore = create<SelectedTodoModalState>(
   (set) => ({
     selectedTodo: null,
     setSelectedTodo: (todo) => set({ selectedTodo: todo }),
