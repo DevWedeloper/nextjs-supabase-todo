@@ -181,8 +181,7 @@ export default function EditTodo() {
                 disabled={
                   form.formState.isSubmitting ||
                   (taskWatch === taskOptimistic &&
-                    deadlineWatch === deadlineOptimistic) ||
-                  !form.formState.isValid
+                    deadlineWatch === deadlineOptimistic)
                 }
               >
                 {form.formState.isSubmitting && (
