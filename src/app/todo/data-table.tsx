@@ -31,6 +31,7 @@ import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import * as React from 'react';
 import SearchTask from './search-task';
 import SelectedTodosInfo from './selected-todos-info';
+import TableActionSettings from './table-action-settings';
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -87,8 +88,11 @@ export function DataTable<TData, TValue>({
 
   return (
     <div className='w-full'>
-      <div className='flex items-center py-4'>
-        <SearchTask />
+      <div className='flex items-center gap-2 py-4'>
+        <div className='flex w-full gap-2'>
+          <SearchTask />
+          <TableActionSettings />
+        </div>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant='outline' className='ml-auto'>
