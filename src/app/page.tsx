@@ -2,7 +2,6 @@ import { createClient } from '@/utils/supabase/server';
 import AddTodo from './add-todo';
 import { columns } from './todo/columns';
 import { DataTable } from './todo/data-table';
-import EditTodo from './todo/edit-todo';
 
 export default async function Home({
   searchParams,
@@ -41,7 +40,6 @@ export default async function Home({
           page={page}
           totalPages={totalPages}
         />
-        <EditTodo />
       </div>
     </div>
   );

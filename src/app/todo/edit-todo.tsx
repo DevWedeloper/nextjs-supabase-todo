@@ -30,6 +30,7 @@ import { CalendarIcon, ReloadIcon } from '@radix-ui/react-icons';
 import { Popover } from '@radix-ui/react-popover';
 import { format } from 'date-fns';
 import moment from 'moment';
+import { useRouter } from 'next/navigation';
 import { startTransition, useEffect, useOptimistic } from 'react';
 import { useForm, useWatch } from 'react-hook-form';
 import { editTodo } from './actions';
@@ -37,7 +38,9 @@ import { editTodo } from './actions';
 export default function EditTodo() {
   const { selectedTodo, setSelectedTodo } = useSelectedTodoStore();
   const { id, task, due_date: deadline, last_edited } = selectedTodo || {};
-  const { isOpen, closeModal } = useModalStore();
+  const { isOpen } = useModalStore();
+
+  const router = useRouter();
 
   const form = useForm<TTodoSchema>({
     resolver: zodResolver(todoSchema),
@@ -98,7 +101,12 @@ export default function EditTodo() {
   };
 
   return (
-    <Dialog onOpenChange={closeModal} open={isOpen}>
+    <Dialog
+      onOpenChange={() => {
+        router.back();
+      }}
+      open={isOpen}
+    >
       <DialogContent className='sm:max-w-[425px]'>
         <DialogHeader>
           <DialogTitle>Edit task</DialogTitle>
