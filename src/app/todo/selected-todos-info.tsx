@@ -35,8 +35,8 @@ export default function SelectedTodosInfo({ count }: { count: number }) {
   };
 
   return (
-    <div className='flex flex-1 items-center gap-16'>
-      <div className='text-muted-foreground text-sm'>
+    <div className='flex flex-1 flex-col items-center md:flex-row md:gap-16'>
+      <div className='text-muted-foreground self-start text-sm md:self-auto'>
         {selectedTodoIds.length} of {count} row(s) selected.
       </div>
       {selectedTodoIds.length > 0 && (
@@ -45,7 +45,7 @@ export default function SelectedTodosInfo({ count }: { count: number }) {
             <Button
               variant='ghost'
               size='sm'
-              className='text-sm text-blue-500 hover:!text-blue-500'
+              className='self-start text-sm text-blue-500 hover:!text-blue-500 md:self-auto'
             >
               Manage selection
             </Button>
