@@ -17,7 +17,7 @@ export default function EditTodoTrigger({ todo }: { todo: Todo }) {
   };
 
   return (
-    <Button variant='outline' size='icon' onClick={handleButtonClick}>
+    <Button variant='outline' size='icon' asChild onClick={handleButtonClick}>
       <Link href={`/todo/${todo.id}`} scroll={false}>
         <Pencil className='h-4 w-4 text-green-500' />
       </Link>
