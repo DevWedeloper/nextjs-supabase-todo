@@ -10,7 +10,9 @@ export default function SelectAllTodo({ ids }: { ids: number[] }) {
   const [isSomeChecked, setIsSomeChecked] = useState(false);
 
   useEffect(() => {
-    setIsChecked(ids.every((id) => selectedTodoIds.includes(id)));
+    setIsChecked(
+      ids.every((id) => selectedTodoIds.includes(id)) && ids.length > 0,
+    );
     setIsSomeChecked(ids.some((id) => selectedTodoIds.includes(id)));
   }, [ids, selectedTodoIds]);
 
