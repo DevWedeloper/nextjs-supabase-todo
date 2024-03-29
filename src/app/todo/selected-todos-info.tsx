@@ -1,6 +1,6 @@
 'use client';
 
-import { toastError } from '@/components/toasts';
+import { toastError, toastSuccess } from '@/components/toasts';
 import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
@@ -18,13 +18,14 @@ export default function SelectedTodosInfo({ count }: { count: number }) {
   const { selectedTodoIds, clearSelectedTodoIds } = useSelectedTodosStore();
 
   const handleOnDeleteAllSelected = async () => {
-    const { error } = await deleteAllSelectedTodos(selectedTodoIds);
+    const { count, error } = await deleteAllSelectedTodos(selectedTodoIds);
 
     if (error) {
       toastError(`${error}`);
     }
 
-    if (!error) {
+    if (count) {
+      toastSuccess(`Successfully deleted ${count} selected todos.`);
       clearSelectedTodoIds();
     }
   };

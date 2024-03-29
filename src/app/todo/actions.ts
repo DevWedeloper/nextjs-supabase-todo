@@ -53,11 +53,14 @@ export async function deleteTodo(id: number) {
 
 export async function deleteAllSelectedTodos(ids: number[]) {
   const supabase = createClient();
-  const { error } = await supabase.from('todo').delete().in('id', ids);
+  const { count, error } = await supabase
+    .from('todo')
+    .delete({ count: 'exact' })
+    .in('id', ids);
 
   revalidatePath('/');
 
-  return { error: error ? error.message : null };
+  return { count, error: error ? error.message : null };
 }
 
 export async function deleteAllOverdue() {
