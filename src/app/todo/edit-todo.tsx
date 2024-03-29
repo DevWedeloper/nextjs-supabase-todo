@@ -38,7 +38,7 @@ import { editTodo } from './actions';
 export default function EditTodo() {
   const { selectedTodo, setSelectedTodo } = useSelectedTodoStore();
   const { id, task, due_date: deadline, last_edited } = selectedTodo || {};
-  const { isOpen, closeModal } = useModalStore();
+  const { isOpen } = useModalStore();
 
   const router = useRouter();
 
@@ -103,7 +103,6 @@ export default function EditTodo() {
   return (
     <Dialog
       onOpenChange={() => {
-        closeModal();
         router.back();
       }}
       open={isOpen}
