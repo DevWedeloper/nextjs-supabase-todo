@@ -1,8 +1,18 @@
+import EditTodo from '../edit-todo';
+import { fetchTodoById } from './actions';
+import EditTodoHandler from './edit-todo-handler';
 
-export default function Todo() {
+export default async function Todo({
+  params: { id },
+}: {
+  params: { id: number };
+}) {
+  const { data, error } = await fetchTodoById(id);
+
   return (
     <>
-      <h1>Normal</h1>
+      <EditTodoHandler data={data} error={error} />
+      <EditTodo />
     </>
   );
 }
