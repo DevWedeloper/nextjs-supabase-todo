@@ -13,7 +13,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { EllipsisVertical, Trash2 } from 'lucide-react';
-import { deleteAllOverdue } from './actions';
+import { deleteAllComplete, deleteAllOverdue } from './actions';
 
 export default function TableActionSettings() {
   const handleDeleteAllOverdue = async () => {
@@ -28,7 +28,17 @@ export default function TableActionSettings() {
     }
   };
 
-  const handleDeleteAllCompleted = async () => {};
+  const handleDeleteAllCompleted = async () => {
+    const { count, error } = await deleteAllComplete();
+
+    if (error) {
+      toastError(`${error}`);
+    }
+
+    if (count) {
+      toastSuccess(`Successfully deleted ${count} completed todos.`);
+    }
+  };
 
   return (
     <DropdownMenu>

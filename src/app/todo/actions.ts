@@ -71,3 +71,15 @@ export async function deleteAllOverdue() {
 
   return { count, error: error ? error.message : null };
 }
+
+export async function deleteAllComplete() {
+  const supabase = createClient();
+  const { count, error } = await supabase
+    .from('todo')
+    .delete({ count: 'exact' })
+    .eq('completed', true);
+
+  revalidatePath('/');
+
+  return { count, error: error ? error.message : null };
+}
