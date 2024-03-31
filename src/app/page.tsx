@@ -30,7 +30,7 @@ export default async function Home({
   const totalPages = Math.ceil((count ?? 0) / pageSize);
 
   return (
-    <div className='flex min-h-screen items-center justify-center p-4'>
+    <div className='animate-fade-in flex min-h-screen items-center justify-center p-4'>
       <div className='flex w-full flex-col gap-4'>
         <AddTodo />
         <DataTable
